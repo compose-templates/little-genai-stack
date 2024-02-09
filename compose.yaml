@@ -1,0 +1,16 @@
+services:
+  download-model:
+    image: curlimages/curl:8.6.0
+    entrypoint: ["curl", "http://host.docker.internal:11434/api/pull", "-d", '{"name": "tinydolphin"}']
+
+  python-environment:
+    build:
+      context: ./.docker
+      dockerfile: Dockerfile
+    container_name: python
+    environment:
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434
+    volumes:
+      - ./demo:/demo
+    ports:
+      - 8000:8000
